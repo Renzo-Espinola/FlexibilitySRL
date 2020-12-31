@@ -8,6 +8,8 @@
 README.txt
 # Ignore folder named 'output'
 output/
+# Ignore folder named 'output'
+logs/
 # Ignore folder named 'target'
 target/
 # Ignore file named '*.iml'
