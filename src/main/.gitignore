@@ -13,7 +13,7 @@ target/
 # Ignore file named '*.iml'
 *.iml
 # Ignore folder named '.idea'
-.idea/
+../.idea/
 © 2020 GitHub, Inc.
 # User-specific stuff
 .idea/**/workspace.xml
