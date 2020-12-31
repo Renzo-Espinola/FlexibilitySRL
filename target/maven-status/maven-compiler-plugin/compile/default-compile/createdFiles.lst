@@ -1,8 +1,0 @@
-com\flexibilitysrl\models\Vendedor.class
-com\flexibilitysrl\entity\ClientesEntity.class
-com\flexibilitysrl\entity\PersonaEntity.class
-com\flexibilitysrl\FlexibilitysrlApplication.class
-com\flexibilitysrl\models\Clientes.class
-com\flexibilitysrl\models\Persona.class
-com\flexibilitysrl\models\Productos.class
-com\flexibilitysrl\config\SwaggerConfig.class
