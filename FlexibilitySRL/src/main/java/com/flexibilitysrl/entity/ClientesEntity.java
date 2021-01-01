@@ -1,6 +1,6 @@
 package com.flexibilitysrl.entity;
 
-import com.flexibilitysrl.models.Persona;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,8 @@ import javax.persistence.*;
 public class ClientesEntity extends PersonaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(insertable = false)
+    @ApiModelProperty(hidden = true)
+    @Column
     private Long idCliente;
     @Column
     private String razonSocial;

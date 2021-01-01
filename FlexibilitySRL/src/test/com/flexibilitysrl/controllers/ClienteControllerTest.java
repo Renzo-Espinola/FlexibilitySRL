@@ -42,7 +42,9 @@ class ClienteControllerTest {
         this.clientesEntityList = new ArrayList<>();
         Persona persona = new Persona(33074277L, "Renzo", "Espinola");
         ClientesEntity clientesEntity = new ClientesEntity(1L, "CONSUMIDOR FINAL");
+        ClientesEntity clientesEntity2 = new ClientesEntity(2L, "IVA EXENTO");
         clientesEntityList.add(clientesEntity);
+        clientesEntityList.add(clientesEntity2);
     }
 
     @Test
