@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface IProductoService {
     Iterable<ProductoEntity>findAll();
     ProductoEntity save (ProductoEntity productoEntity);
-    Optional<ProductoEntity> findBy(Long id);
+    Optional<ProductoEntity> findById(Long id);
     void deleteBy (Long id);
     ProductoEntity updateProducto(ProductoEntity productoEntity);
 }

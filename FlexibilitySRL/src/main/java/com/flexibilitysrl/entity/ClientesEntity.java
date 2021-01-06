@@ -18,7 +18,6 @@ public class ClientesEntity extends PersonaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(hidden = true)
-    @Column
     private Long idCliente;
     @Column
     private String razonSocial;

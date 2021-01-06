@@ -32,7 +32,7 @@ public class ProductoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        Optional<ProductoEntity> producto = productoService.findBy(id);
+        Optional<ProductoEntity> producto = productoService.findById(id);
         if (!producto.isPresent()) {
             logger.error("ERROR PRODUCTO NO ENCONTRADO");
             return ResponseEntity.notFound().build();

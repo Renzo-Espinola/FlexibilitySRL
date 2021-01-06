@@ -29,7 +29,7 @@ public class ProductoServiceImpl implements IProductoService {
     }
 
     @Override
-    public Optional<ProductoEntity> findBy(Long id) {
+    public Optional<ProductoEntity> findById(Long id) {
         Optional<ProductoEntity> message = null;
         try {
             if (id != null) {
