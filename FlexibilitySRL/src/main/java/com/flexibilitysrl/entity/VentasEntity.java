@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="Ventas")
@@ -29,9 +30,10 @@ public class VentasEntity {
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCompra;
-    @OneToOne
+    @OneToMany
     @ApiModelProperty(hidden = true)
-    private ProductoEntity productoEntities;
+    @JoinColumn
+    private List<ProductoEntity> productoEntities;
     @OneToOne
     @ApiModelProperty(hidden = true)
     private ClientesEntity clientesEntity;

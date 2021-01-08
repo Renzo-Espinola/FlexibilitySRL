@@ -1,76 +1,59 @@
 package com.flexibilitysrl.services;
 
-import com.flexibilitysrl.entity.*;
-import com.flexibilitysrl.exceptions.ObjectNotFoundEx;
-import com.flexibilitysrl.repositories.ClienteRepo;
-import com.flexibilitysrl.repositories.ProductoRepo;
-import com.flexibilitysrl.repositories.VendedorRepo;
-import com.flexibilitysrl.repositories.VentasRepo;
+import com.flexibilitysrl.entity.ClientesEntity;
+import com.flexibilitysrl.entity.ProductoEntity;
+import com.flexibilitysrl.entity.VendedorEntity;
+import com.flexibilitysrl.entity.VentasEntity;
+import com.flexibilitysrl.exception.ObjectNotFoundEx;
+import com.flexibilitysrl.repositories.ClienteRepositories;
+import com.flexibilitysrl.repositories.ProductoRepositories;
+import com.flexibilitysrl.repositories.VendedorRepositories;
+import com.flexibilitysrl.repositories.VentasRepositories;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @Slf4j
 public class VentasServiceImpl implements IVentasService {
     @Autowired
-    private VentasRepo ventasRepo;
+    private VentasRepositories ventasRepositories;
     @Autowired
-    private ClienteRepo clienteRepo;
+    private ClienteRepositories clienteRepositories;
     @Autowired
-    private VendedorRepo vendedorRepo;
+    private VendedorRepositories vendedorRepositories;
     @Autowired
-    private ProductoRepo productoRepo;
+    private ProductoRepositories productoRepositories;
 
-    private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
-    private ClientesEntity clienteDefault = new ClientesEntity(1L, "RS_DEFAULT");
-    private VendedorEntity vendedorDefault = new VendedorEntity(1L, 1L);
-    private PersonaEntity personaDefault = new PersonaEntity(1L, "NOM_DEFAULT", "AP_DEFAULT");
-    private ProductoEntity productoDefault = new ProductoEntity(1L, "P_DEFAULT", 50, 5, "T_DEFAULT");
     private static Logger logger = LoggerFactory.getLogger(VentasServiceImpl.class);
 
     @Override
-    public VentasEntity saveVentas(VentasEntity ventasEntity,Optional<ProductoEntity> productoEntity, Optional<ClientesEntity> clientesEntity, Optional<VendedorEntity> vendedorEntity) {
+    public VentasEntity saveVentas(VentasEntity ventasEntity,
+                                   List<ProductoEntity> productoEntityOpt,
+                                   ClientesEntity clientesEntityOpt,
+                                   VendedorEntity vendedorEntityOpt) throws ObjectNotFoundEx {
         String message = "";
         double totalCompra = 0;
-        int i = 0;
-        ClientesEntity clientesEntity1;
-        ProductoEntity productoEntity1;
-        VendedorEntity vendedorEntity1;
+        Long i = 0L;
         VentasEntity ventasEntityDb = new VentasEntity();
-        if (clientesEntity.isPresent()) {
-            Optional<ClientesEntity> optClientesEntity = clienteRepo.findById(clientesEntity.get().getIdCliente());
-            clientesEntity1 = optClientesEntity.get();
-            ventasEntityDb.setClientesEntity(clientesEntity1);
+        ventasEntityDb.setVendedorEntity(vendedorEntityOpt);
+        ventasEntityDb.setClientesEntity(clientesEntityOpt);
+        if (productoEntityOpt.stream().findFirst().get().getStock() > 0 &&
+                ventasEntity.getCantidad() < productoEntityOpt.stream().findFirst().get().getStock()) {
+            ventasEntityDb.setProductoEntities(productoEntityOpt);
         } else {
-            ventasEntityDb.setClientesEntity(clienteDefault);
+            throw new ObjectNotFoundEx("STOCK INSUFICIENTE");
         }
-        if (productoEntity.isPresent()) {
-            Optional<ProductoEntity> optProductoEntity = productoRepo.findById(productoEntity.get().getIdProducto());
-            productoEntity1 = optProductoEntity.get();
-            ventasEntityDb.setProductoEntities(productoEntity1);
-            totalCompra=ventasEntityDb.getProductoEntities().getPrecio()+totalCompra;
-        } else {
-            ventasEntityDb.setProductoEntities(productoDefault);
-        }
-        if (vendedorEntity.isPresent()) {
-            Optional<VendedorEntity> optVendedorEntity = vendedorRepo.findById(vendedorEntity.get().getIdVendedor());
-            vendedorEntity1 = optVendedorEntity.get();
-            ventasEntityDb.setVendedorEntity(vendedorEntity1);
-
-        } else {
-            ventasEntityDb.setVendedorEntity(vendedorDefault);
-        }
+        totalCompra = ventasEntityDb.getProductoEntities().stream().findAny().get().getPrecio();
         ventasEntityDb.setIdVentas(ventasEntity.getIdVentas());
         ventasEntityDb.setCantidad(ventasEntity.getCantidad());
-        ventasEntityDb.setFechaCompra(ventasEntity.getFechaCompra());
-        ventasEntityDb.setTotal(totalCompra*ventasEntityDb.getCantidad());
-        return ventasEntityDb;
+        ventasEntityDb.setTotal(totalCompra * ventasEntityDb.getCantidad());
+
+        return ventasRepositories.save(ventasEntityDb);
     }
 
     @Override
@@ -85,20 +68,19 @@ public class VentasServiceImpl implements IVentasService {
 
     @Override
     public Iterable<VentasEntity> findAllVentas() {
-        return ventasRepo.findAll();
+        return ventasRepositories.findAll();
     }
 
     @Override
-    public Optional<VentasEntity> findByIdVenta(Long id) {
-        Optional<VentasEntity> message = null;
-        try {
-            if (id != null) {
-                message = ventasRepo.findById(id);
-
-            }
-        } catch (ObjectNotFoundEx ob) {
-            logger.error(ob.getMessage());
-        }
-        return message;
+    public VentasEntity findByIdVenta(Long id) {
+        return ventasRepositories.findById(id).orElseThrow(() -> new ObjectNotFoundEx("ERROR"));
     }
 }
+//totalCompra = ventasEntityDb.getProductoEntities().get(i).getPrecio() + totalCompra;
+//productoEntityOpt.stream().forEach((p) -> {
+                    /*ProductoEntity producResg = new ProductoEntity();
+                    producResg.setIdProducto(p.getIdProducto());
+                    producResg.setNombreProducto(p.getNombreProducto());
+                    producResg.setTipo(p.getTipo());
+                    producResg.setPrecio(p.getPrecio());
+                    producResg.setStock(p.getStock());*/

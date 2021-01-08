@@ -1,45 +1,34 @@
 package com.flexibilitysrl.services;
 
 import com.flexibilitysrl.entity.ProductoEntity;
-import com.flexibilitysrl.exceptions.ObjectNotFoundEx;
-import com.flexibilitysrl.repositories.ProductoRepo;
+import com.flexibilitysrl.exception.ObjectNotFoundEx;
+import com.flexibilitysrl.repositories.ProductoRepositories;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @Slf4j
 public class ProductoServiceImpl implements IProductoService {
     private static Logger logger = LoggerFactory.getLogger(ProductoServiceImpl.class);
     @Autowired
-    private ProductoRepo productoRepo;
+    private ProductoRepositories productoRepositories;
 
     @Override
     public Iterable<ProductoEntity> findAll() {
-        return productoRepo.findAll();
+        return productoRepositories.findAll();
     }
 
     @Override
-    public ProductoEntity save (ProductoEntity productoEntity) {
-        return productoRepo.save(productoEntity);
+    public ProductoEntity save(ProductoEntity productoEntity) {
+        return productoRepositories.save(productoEntity);
     }
 
     @Override
-    public Optional<ProductoEntity> findById(Long id) {
-        Optional<ProductoEntity> message = null;
-        try {
-            if (id != null) {
-                message = productoRepo.findById(id);
-
-            }
-        } catch (ObjectNotFoundEx ob) {
-            logger.error(ob.getMessage());
-        }
-        return message;
+    public ProductoEntity findById(Long id) {
+        return productoRepositories.findById(id).orElseThrow(() -> new ObjectNotFoundEx("ERROR PRODUCTO"));
     }
 
     @Override
@@ -47,7 +36,7 @@ public class ProductoServiceImpl implements IProductoService {
         String message = null;
         try {
             if (id != null) {
-                productoRepo.deleteById(id);
+                productoRepositories.deleteById(id);
                 message = "ID FOUND";
 
             }
@@ -66,7 +55,7 @@ public class ProductoServiceImpl implements IProductoService {
         productoEntityDb.setPrecio(productoEntity.getPrecio());
         productoEntityDb.setStock(productoEntity.getStock());
         productoEntityDb.setTipo(productoEntity.getTipo());
-        return productoRepo.save(productoEntityDb);
+        return productoRepositories.save(productoEntityDb);
 
     }
 }

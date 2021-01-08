@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/v1/Producto")
 public class ProductoController {
@@ -32,12 +30,7 @@ public class ProductoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        Optional<ProductoEntity> producto = productoService.findById(id);
-        if (!producto.isPresent()) {
-            logger.error("ERROR PRODUCTO NO ENCONTRADO");
-            return ResponseEntity.notFound().build();
-        }
-        logger.info("PRODUCTO ENCONTRADO");
+        ProductoEntity producto = productoService.findById(id);
         return ResponseEntity.ok(producto);
     }
 

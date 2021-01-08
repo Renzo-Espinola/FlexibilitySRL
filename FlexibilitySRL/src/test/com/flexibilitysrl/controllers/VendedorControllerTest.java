@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.BDDMockito.given;
@@ -72,7 +71,7 @@ class VendedorControllerTest {
         Long idVendedor = 1L;
         Persona persona = new Persona(33074277L, "Renzo", "Espinola");
         VendedorEntity vendedorEntity = new VendedorEntity(1L, 2l);
-        given(vendedorService.findBy(idVendedor)).willReturn(Optional.of(vendedorEntity));
+        given(vendedorService.findBy(idVendedor)).willReturn(vendedorEntity);
 
         this.mockMvc.perform(get("/v1/Vendedor/{id}",idVendedor))
                 .andExpect(status().isOk());
@@ -83,7 +82,7 @@ class VendedorControllerTest {
         Long idVendedor = 1L;
         Persona persona = new Persona(33074277L, "Renzo", "Espinola");
         VendedorEntity vendedorEntity = new VendedorEntity(1L, 2L);
-        given(vendedorService.findBy(idVendedor)).willReturn(Optional.of(vendedorEntity));
+        given(vendedorService.findBy(idVendedor)).willReturn(vendedorEntity);
         doNothing().when(vendedorService).deleteBy(vendedorEntity.getIdVendedor());
 
         this.mockMvc.perform(delete("/v1/Vendedor/{id}",vendedorEntity.getIdVendedor()))

@@ -15,7 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -37,21 +38,18 @@ public class VentasController {
     @PostMapping
     @RequestMapping(value ="v1/Producto/{idProducto}/Cliente/{idCliente}/Vendedor/{idVendedor}",method = RequestMethod.POST)
     public ResponseEntity<?> saveVenta (@RequestBody VentasEntity ventasEntity, @PathVariable("idProducto") Long idProducto,@PathVariable("idCliente") Long idCliente,@PathVariable("idVendedor") Long idvendedor){
-        Optional<ProductoEntity> prodEntity = productoService.findById(idProducto);
-        Optional<ClientesEntity> clientesEntity = clienteService.findBy(idCliente);
-        Optional<VendedorEntity> vendedorEntity = vendedorService.findBy(idvendedor);
-        VentasEntity ventaEntityDb = ventasService.saveVentas(ventasEntity,prodEntity,clientesEntity,vendedorEntity);
+        List<ProductoEntity> prodEntityList= new ArrayList<>();
+        prodEntityList.add(productoService.findById(idProducto));
+        ClientesEntity clientesEntity = clienteService.findBy(idCliente);
+        VendedorEntity vendedorEntity = vendedorService.findBy(idvendedor);
+        vendedorEntity.setCantVentas((vendedorService.findBy(idvendedor).getCantVentas()+1));
+        VentasEntity ventaEntityDb = ventasService.saveVentas(ventasEntity,prodEntityList,clientesEntity,vendedorEntity);
         logger.info("Nueva Venta Creado");
         return ResponseEntity.status(HttpStatus.CREATED).body(ventaEntityDb);
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        Optional<VentasEntity> venta = ventasService.findByIdVenta(id);
-        if (!venta.isPresent()) {
-            logger.error("ERROR Venta NO ENCONTRADA");
-            return ResponseEntity.notFound().build();
-        }
-        logger.info("Venta ENCONTRADA");
+        VentasEntity venta = ventasService.findByIdVenta(id);
         return ResponseEntity.ok(venta);
     }
     @GetMapping("/listAll")

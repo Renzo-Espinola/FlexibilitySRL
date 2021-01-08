@@ -21,6 +21,7 @@ public class VendedorEntity extends PersonaEntity{
     @Column
     private Long idVendedor;
     @Column
-    private Long cantVentas;
+    @ApiModelProperty(hidden = true)
+    private Long cantVentas=0L;
 
 }
