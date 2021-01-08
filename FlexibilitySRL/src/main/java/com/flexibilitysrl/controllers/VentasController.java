@@ -56,5 +56,11 @@ public class VentasController {
     public ResponseEntity<?> findAll() {
         return ResponseEntity.ok().body(ventasService.findAllVentas());
     }
-    
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        ventasService.deleteVentas(id);
+        logger.warn("Venta BORRADO");
+        return ResponseEntity.ok().build();
+    }
 }
