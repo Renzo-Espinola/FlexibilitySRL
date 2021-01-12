@@ -9,26 +9,16 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name="Producto")
+@Table(name="Costumer")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class ProductoEntity {
+@NoArgsConstructor
+public class CostumerEntity extends PersonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(hidden = true)
+    private Long idCliente;
     @Column
-    private Long idProducto;
-    @Column
-    private String nombreProducto;
-    @Column
-    private double precio;
-    @Column
-    private int stock;
-    @Column
-    private String tipo;
-
-
-
+    private String razonSocial;
 }

@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
-public class PersonaEntity {
+public class PersonEntity {
     @Column
     private Long dni;
     @Column

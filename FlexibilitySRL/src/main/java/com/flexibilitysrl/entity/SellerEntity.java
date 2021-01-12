@@ -9,12 +9,12 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Vendedor")
+@Table(name = "Seller")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class VendedorEntity extends PersonaEntity{
+public class SellerEntity extends PersonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(hidden = true)

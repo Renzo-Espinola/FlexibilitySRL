@@ -1,7 +1,7 @@
 package com.flexibilitysrl.controllers;
 
-import com.flexibilitysrl.entity.ClientesEntity;
-import com.flexibilitysrl.services.IClienteService;
+import com.flexibilitysrl.entity.CostumerEntity;
+import com.flexibilitysrl.services.ICostumerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/v1/Cliente")
-public class ClienteController {
-    private static Logger logger = LoggerFactory.getLogger(ClienteController.class);
+@RequestMapping("/v1/Costumer")
+public class CostumerController {
+    private static Logger logger = LoggerFactory.getLogger(CostumerController.class);
 
     @Autowired
-    private IClienteService clienteService;
+    private ICostumerService clienteService;
 
     @PostMapping
-    public ResponseEntity<?> saveCliente(@RequestBody ClientesEntity cliente) {
-        ClientesEntity clienteEntityDb = clienteService.save(cliente);
+    public ResponseEntity<?> saveCostumer(@RequestBody CostumerEntity cliente) {
+        CostumerEntity clienteEntityDb = clienteService.save(cliente);
         logger.info("Nuevo Cliente Creado");
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteEntityDb);
     }
@@ -32,7 +32,7 @@ public class ClienteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        ClientesEntity cliente = clienteService.findBy(id);
+        CostumerEntity cliente = clienteService.findBy(id);
         return ResponseEntity.ok(cliente);
     }
 

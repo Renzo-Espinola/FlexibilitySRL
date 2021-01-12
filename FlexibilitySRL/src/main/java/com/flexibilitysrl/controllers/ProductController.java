@@ -1,7 +1,7 @@
 package com.flexibilitysrl.controllers;
 
-import com.flexibilitysrl.entity.ProductoEntity;
-import com.flexibilitysrl.services.IProductoService;
+import com.flexibilitysrl.entity.ProductEntity;
+import com.flexibilitysrl.services.IProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +10,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/Producto")
-public class ProductoController {
-    private static Logger logger = LoggerFactory.getLogger(ClienteController.class);
+@RequestMapping("/v1/Product")
+public class ProductController {
+    private static Logger logger = LoggerFactory.getLogger(CostumerController.class);
 
     @Autowired
-    private IProductoService productoService;
+    private IProductService productoService;
     @PostMapping
-    public ResponseEntity<?> saveProducto(@RequestBody ProductoEntity productoEntity) {
-        ProductoEntity productoEntityDb = productoService.save(productoEntity);
+    public ResponseEntity<?> saveProduct(@RequestBody ProductEntity productEntity) {
+        ProductEntity productEntityDb = productoService.save(productEntity);
         logger.info("Nuevo producto Creado");
-        return ResponseEntity.status(HttpStatus.CREATED).body(productoEntityDb);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productEntityDb);
     }
 
     @GetMapping("/listAll")
@@ -30,7 +30,7 @@ public class ProductoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        ProductoEntity producto = productoService.findById(id);
+        ProductEntity producto = productoService.findById(String.valueOf(id));
         return ResponseEntity.ok(producto);
     }
 

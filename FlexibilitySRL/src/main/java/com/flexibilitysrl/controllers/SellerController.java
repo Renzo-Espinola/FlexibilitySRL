@@ -1,7 +1,7 @@
 package com.flexibilitysrl.controllers;
 
-import com.flexibilitysrl.entity.VendedorEntity;
-import com.flexibilitysrl.services.IVendedorService;
+import com.flexibilitysrl.entity.SellerEntity;
+import com.flexibilitysrl.services.ISellerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +10,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/Vendedor")
-public class VendedorController {
-    private static Logger logger = LoggerFactory.getLogger(ClienteController.class);
+@RequestMapping("/v1/Seller")
+public class SellerController {
+    private static Logger logger = LoggerFactory.getLogger(CostumerController.class);
 
     @Autowired
-    private IVendedorService vendedorService;
+    private ISellerService vendedorService;
 
     @PostMapping
-    public ResponseEntity<?> saveVendedor(@RequestBody VendedorEntity vendedorEntity) {
-        VendedorEntity clienteEntityDb = vendedorService.save(vendedorEntity);
-        logger.info("Nuevo Vendedor Creado");
+    public ResponseEntity<?> saveSeller(@RequestBody SellerEntity sellerEntity) {
+        SellerEntity clienteEntityDb = vendedorService.save(sellerEntity);
+        logger.info("Nuevo Seller Creado");
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteEntityDb);
     }
 
@@ -31,14 +31,14 @@ public class VendedorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        VendedorEntity cliente = vendedorService.findBy(id);
+        SellerEntity cliente = vendedorService.findBy(id);
         return ResponseEntity.ok(cliente);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         vendedorService.deleteBy(id);
-        logger.warn("Vendedor BORRADO");
+        logger.warn("Seller BORRADO");
         return ResponseEntity.ok().build();
     }
 

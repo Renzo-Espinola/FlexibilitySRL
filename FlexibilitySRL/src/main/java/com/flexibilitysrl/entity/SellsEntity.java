@@ -11,12 +11,12 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="Ventas")
+@Table(name="Sells")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class VentasEntity {
+public class SellsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(hidden = true)
@@ -33,13 +33,13 @@ public class VentasEntity {
     @OneToMany
     @ApiModelProperty(hidden = true)
     @JoinColumn
-    private List<ProductoEntity> productoEntities;
+    private List<ProductEntity> productoEntities;
     @OneToOne
     @ApiModelProperty(hidden = true)
-    private ClientesEntity clientesEntity;
+    private CostumerEntity costumerEntity;
     @OneToOne
     @ApiModelProperty(hidden = true)
-    private VendedorEntity vendedorEntity;
+    private SellerEntity sellerEntity;
     @PrePersist
     public void prePersist(){this.fechaCompra=new Date();}
 
