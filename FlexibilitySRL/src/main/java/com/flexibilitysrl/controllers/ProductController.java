@@ -19,7 +19,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<?> saveProduct(@RequestBody ProductEntity productEntity) {
         ProductEntity productEntityDb = productoService.save(productEntity);
-        logger.info("Nuevo producto Creado");
+        logger.info("New Product created");
         return ResponseEntity.status(HttpStatus.CREATED).body(productEntityDb);
     }
 
@@ -37,7 +37,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         productoService.deleteBy(id);
-        logger.warn("PRODUCTO BORRADO");
+        logger.warn("Product Erased");
         return ResponseEntity.ok().build();
     }
 

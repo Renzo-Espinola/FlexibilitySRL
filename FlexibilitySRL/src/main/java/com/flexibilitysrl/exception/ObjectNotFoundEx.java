@@ -1,7 +1,7 @@
 package com.flexibilitysrl.exception;
 
-public class ObjectNotFoundEx extends IllegalArgumentException{
-    public ObjectNotFoundEx (String message) {super (message);}
-}
+import javassist.tools.rmi.ObjectNotFoundException;
 
-
+public class ObjectNotFoundEx extends ObjectNotFoundException {
+        public ObjectNotFoundEx(String message) {super (message);}
+    }

@@ -1,7 +1,7 @@
 package com.flexibilitysrl.services;
 
 import com.flexibilitysrl.entity.CostumerEntity;
-import com.flexibilitysrl.exception.ObjectNotFoundEx;
+import com.flexibilitysrl.exception.IllegalArgEx;
 import com.flexibilitysrl.repositories.CostumerRepositories;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public class CostumerServiceImpl implements ICostumerService {
 
     @Override
     public CostumerEntity findBy(Long id) {
-        return costumerRepositories.findById(id).orElseThrow(() -> new ObjectNotFoundEx("ERROR CLIENTE"));
+        return costumerRepositories.findById(id).orElseThrow(() -> new IllegalArgEx("ERROR CLIENTE"));
     }
 
     @Override
@@ -41,7 +41,7 @@ public class CostumerServiceImpl implements ICostumerService {
                 message = "ID FOUND";
             }
 
-        } catch (ObjectNotFoundEx ob) {
+        } catch (IllegalArgEx ob) {
             String messageObError = ob.getMessage();
         }
         System.out.println(message);

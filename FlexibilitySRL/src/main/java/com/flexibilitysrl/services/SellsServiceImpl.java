@@ -4,7 +4,7 @@ import com.flexibilitysrl.entity.CostumerEntity;
 import com.flexibilitysrl.entity.ProductEntity;
 import com.flexibilitysrl.entity.SellerEntity;
 import com.flexibilitysrl.entity.SellsEntity;
-import com.flexibilitysrl.exception.ObjectNotFoundEx;
+import com.flexibilitysrl.exception.IllegalArgEx;
 import com.flexibilitysrl.repositories.CostumerRepositories;
 import com.flexibilitysrl.repositories.ProductRepositories;
 import com.flexibilitysrl.repositories.SellerRepositories;
@@ -35,7 +35,7 @@ public class SellsServiceImpl implements ISellsService {
     public SellsEntity saveVentas(SellsEntity sellsEntity,
                                   List<ProductEntity> productEntityOpt,
                                   CostumerEntity costumerEntityOpt,
-                                  SellerEntity sellerEntityOpt) throws ObjectNotFoundEx {
+                                  SellerEntity sellerEntityOpt) throws IllegalArgEx {
         String message = "";
         double totalCompra = 0;
         int i = 0;
@@ -58,7 +58,7 @@ public class SellsServiceImpl implements ISellsService {
             sellsEntityDb.setCantidad(sellsEntity.getCantidad());
             sellsEntityDb.setTotal(totalCompra * sellsEntityDb.getCantidad());
         } else {
-            throw new ObjectNotFoundEx("STOCK INSUFICIENTE");
+            throw new IllegalArgEx("INSUFFICIENT STOCK");
         }
         return sellsRepositories.save(sellsEntityDb);
     }
@@ -80,7 +80,7 @@ public class SellsServiceImpl implements ISellsService {
 
     @Override
     public SellsEntity findByIdVenta(Long id) {
-        return sellsRepositories.findById(id).orElseThrow(() -> new ObjectNotFoundEx("ERROR"));
+        return sellsRepositories.findById(id).orElseThrow(() -> new IllegalArgEx("ERROR"));
     }
 }
 //totalCompra = ventasEntityDb.getProductoEntities().get(i).getPrecio() + totalCompra;

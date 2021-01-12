@@ -21,7 +21,7 @@ public class CostumerController {
     @PostMapping
     public ResponseEntity<?> saveCostumer(@RequestBody CostumerEntity cliente) {
         CostumerEntity clienteEntityDb = clienteService.save(cliente);
-        logger.info("Nuevo Cliente Creado");
+        logger.info("New Costumer Created");
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteEntityDb);
     }
 
@@ -39,7 +39,7 @@ public class CostumerController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         clienteService.deleteBy(id);
-        logger.warn("CLIENTE BORRADO");
+        logger.warn("Costumer deleted");
         return ResponseEntity.ok().build();
     }
 

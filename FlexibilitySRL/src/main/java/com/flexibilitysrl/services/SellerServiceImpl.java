@@ -1,7 +1,7 @@
 package com.flexibilitysrl.services;
 
 import com.flexibilitysrl.entity.SellerEntity;
-import com.flexibilitysrl.exception.ObjectNotFoundEx;
+import com.flexibilitysrl.exception.IllegalArgEx;
 import com.flexibilitysrl.repositories.SellerRepositories;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class SellerServiceImpl implements ISellerService {
 
     @Override
     public SellerEntity findBy(Long id) {
-        return sellerRepositories.findById(id).orElseThrow(()-> new ObjectNotFoundEx("ERROR VENTAS"));
+        return sellerRepositories.findById(id).orElseThrow(()-> new IllegalArgEx("SELLS ERROR"));
 
     }
 
@@ -41,7 +41,7 @@ public class SellerServiceImpl implements ISellerService {
                 message = "ID FOUND";
             }
 
-        } catch (ObjectNotFoundEx ob) {
+        } catch (IllegalArgEx ob) {
             String messageObError = ob.getMessage();
         }
         System.out.println(message);

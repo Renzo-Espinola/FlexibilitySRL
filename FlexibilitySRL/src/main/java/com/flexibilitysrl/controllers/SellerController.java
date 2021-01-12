@@ -20,7 +20,7 @@ public class SellerController {
     @PostMapping
     public ResponseEntity<?> saveSeller(@RequestBody SellerEntity sellerEntity) {
         SellerEntity clienteEntityDb = vendedorService.save(sellerEntity);
-        logger.info("Nuevo Seller Creado");
+        logger.info("New Seller Created");
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteEntityDb);
     }
 
@@ -38,7 +38,7 @@ public class SellerController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         vendedorService.deleteBy(id);
-        logger.warn("Seller BORRADO");
+        logger.warn("Seller Erased");
         return ResponseEntity.ok().build();
     }
 

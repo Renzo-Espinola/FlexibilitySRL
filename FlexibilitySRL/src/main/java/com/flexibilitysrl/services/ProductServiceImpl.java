@@ -1,7 +1,7 @@
 package com.flexibilitysrl.services;
 
 import com.flexibilitysrl.entity.ProductEntity;
-import com.flexibilitysrl.exception.ObjectNotFoundEx;
+import com.flexibilitysrl.exception.IllegalArgEx;
 import com.flexibilitysrl.repositories.ProductRepositories;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public ProductEntity findById(String id) {
-        return productRepositories.findById(id).orElseThrow(() -> new ObjectNotFoundEx("ERROR PRODUCTO"));
+        return productRepositories.findById(id).orElseThrow(() -> new IllegalArgEx("PRODUCT ERROR "));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ProductServiceImpl implements IProductService {
                 message = "ID FOUND";
 
             }
-        } catch (ObjectNotFoundEx ob) {
+        } catch (IllegalArgEx ob) {
             logger.error(ob.getMessage());
         }
         System.out.println(message);

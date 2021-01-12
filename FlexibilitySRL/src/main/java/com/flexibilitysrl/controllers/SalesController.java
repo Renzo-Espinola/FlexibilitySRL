@@ -51,7 +51,7 @@ public class SalesController {
         SellerEntity sellerEntity = vendedorService.findBy(requestsSells.getIdSeller());
         sellerEntity.setCantVentas((vendedorService.findBy(sellerEntity.getIdVendedor()).getCantVentas() + 1));
         SellsEntity ventaEntityDb = ventasService.saveVentas(requestsSells.getSellsEntity(),prodEntityList, costumerEntity, sellerEntity);
-        logger.info("Nueva Venta Creado");
+        logger.info("New Sell Created");
         return ResponseEntity.status(HttpStatus.CREATED).body(ventaEntityDb);
     }
 
@@ -69,7 +69,7 @@ public class SalesController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         ventasService.deleteVentas(id);
-        logger.warn("Venta BORRADO");
+        logger.warn("Sell Erased");
         return ResponseEntity.ok().build();
     }
 }
