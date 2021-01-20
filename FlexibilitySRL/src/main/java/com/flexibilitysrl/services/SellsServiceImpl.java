@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,32 +36,37 @@ public class SellsServiceImpl implements ISellsService {
     public SalesEntity saveVentas(SalesEntity salesEntity,
                                   List<ProductEntity> productEntityOpt,
                                   CostumerEntity costumerEntityOpt,
-                                  SellerEntity sellerEntityOpt) throws IllegalArgEx {
+                                  SellerEntity sellerEntityOpt) {
 
         double totalCompra = 0;
         int i = 0;
         SalesEntity salesEntityDb = new SalesEntity();
-        if (productEntityOpt.stream().findFirst().get().getStock() > 0 &&
-                salesEntity.getCantidad() <= productEntityOpt.stream().
-                        findFirst().get().getStock()) {
-
-            for (ProductEntity prod : productEntityOpt) {
-                totalCompra = prod.getPrecio() + totalCompra;
-                prod.setStock(prod.getStock() - salesEntity.getCantidad());
-                productEntityOpt.set(i, prod);
-                i++;
+        List<ProductEntity> productEntitiesResg = new ArrayList<>();
+        if (productEntityOpt.stream().findFirst().isPresent()) {
+            productEntitiesResg.add(productEntityOpt.listIterator().next());
+            if (productEntitiesResg.listIterator().next().getStock() > 0 &&
+                    salesEntity.getCantidad() <= productEntitiesResg.listIterator().next().getStock()) {
+                for (ProductEntity prod : productEntityOpt) {
+                    totalCompra = prod.getPrecio() + totalCompra;
+                    prod.setStock(prod.getStock() - salesEntity.getCantidad());
+                    productEntityOpt.set(i, prod);
+                    i++;
+                }
+                salesEntityDb.setProductoEntities(productEntityOpt);
+                salesEntityDb.setSellerEntity(sellerEntityOpt);
+                salesEntityDb.setCostumerEntity(costumerEntityOpt);
+                salesEntityDb.setIdVentas(salesEntity.getIdVentas());
+                salesEntityDb.setCantidad(salesEntity.getCantidad());
+                salesEntityDb.setTotal(totalCompra * salesEntityDb.getCantidad());
+            } else {
+                logger.warn("INSUFFICIENT STOCK");
+                throw new IllegalArgEx("INSUFFICIENT STOCK");
             }
-            salesEntityDb.setProductoEntities(productEntityOpt);
-            salesEntityDb.setSellerEntity(sellerEntityOpt);
-            salesEntityDb.setCostumerEntity(costumerEntityOpt);
-            salesEntityDb.setIdVentas(salesEntity.getIdVentas());
-            salesEntityDb.setCantidad(salesEntity.getCantidad());
-            salesEntityDb.setTotal(totalCompra * salesEntityDb.getCantidad());
         } else {
-            logger.warn("INSUFFICIENT STOCK");
-            throw new IllegalArgEx("INSUFFICIENT STOCK");
+            logger.warn("ERROR PRODUCT");
         }
         return sellsRepositories.save(salesEntityDb);
+
     }
 
     @Override
