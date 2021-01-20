@@ -47,45 +47,46 @@ class CostumerControllerTest {
     }
 
     @Test
-    void findAll() throws Exception {
+    void find_all_costumers_isok_test() throws Exception {
         given(clienteService.findAll()).willReturn(this.costumerEntityList);
-        this.mockMvc.perform(get("/v1/Cliente/listAll"))
+        this.mockMvc.perform(get("/v1/Costumer/listAll"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()", is(costumerEntityList.size())));
     }
 
     @Test
-    void saveCliente() throws Exception {
+    void save_costumer_iscreated_test() throws Exception {
         Person person = new Person(33074277L, "Renzo", "Espinola");
         CostumerEntity costumerEntity = new CostumerEntity(1L, "CONSUMIDOR FINAL");
         given(clienteService.save(costumerEntity)).willAnswer((invocation)-> invocation.getArguments());
 
-        this.mockMvc.perform(post("/v1/Cliente")
+        this.mockMvc.perform(post("/v1/Costumer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(costumerEntity)))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    void findById() throws Exception {
+    void find_by_id_costumer_isok_test() throws Exception {
         Long idCliente = 1L;
         Person person = new Person(33074277L, "Renzo", "Espinola");
         CostumerEntity costumerEntity = new CostumerEntity(1L, "CONSUMIDOR FINAL");
         given(clienteService.findBy(idCliente)).willReturn(costumerEntity);
 
-        this.mockMvc.perform(get("/v1/Cliente/{id}",idCliente))
-                .andExpect(status().isOk());
+        this.mockMvc.perform(get("/v1/Costumer/{id}",idCliente))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nombre", is(costumerEntity.getNombre())));
     }
 
     @Test
-    void deleteById() throws Exception {
+    void delete_by_id_costumer_isok_test() throws Exception {
         Long idCliente = 1L;
         Person person = new Person(33074277L, "Renzo", "Espinola");
         CostumerEntity costumerEntity = new CostumerEntity(1L, "CONSUMIDOR FINAL");
         given(clienteService.findBy(idCliente)).willReturn(costumerEntity);
         doNothing().when(clienteService).deleteBy(costumerEntity.getIdCliente());
 
-        this.mockMvc.perform(delete("/v1/Cliente/{id}", costumerEntity.getIdCliente()))
+        this.mockMvc.perform(delete("/v1/Costumer/{id}", costumerEntity.getIdCliente()))
                 .andExpect(status().isOk());
     }
 }

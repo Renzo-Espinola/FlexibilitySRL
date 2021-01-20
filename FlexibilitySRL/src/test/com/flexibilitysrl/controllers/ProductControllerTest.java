@@ -45,11 +45,11 @@ class ProductControllerTest {
     }
 
     @Test
-    void save_producto_iscreated_test() throws Exception {
+    void save_product_iscreated_test() throws Exception {
         ProductEntity productEntity = new ProductEntity("1", "PAN", 50, 100L, "COM");
         given(productoService.save(productEntity)).willAnswer((invocation) -> invocation.getArguments());
 
-        this.mockMvc.perform(post("/v1/Producto")
+        this.mockMvc.perform(post("/v1/Product")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(productEntity)))
                 .andExpect(status().isCreated());
@@ -58,7 +58,7 @@ class ProductControllerTest {
     @Test
     void find_all_products_isok_test() throws Exception {
         given(productoService.findAll()).willReturn(this.productEntityList);
-        this.mockMvc.perform(get("/v1/Producto/listAll"))
+        this.mockMvc.perform(get("/v1/Product/listAll"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()", is(productEntityList.size())));
     }
@@ -69,7 +69,7 @@ class ProductControllerTest {
         ProductEntity productEntity = new ProductEntity("1", "PAN", 50, 100L, "COM");
         given(productoService.findById(String.valueOf(idProducto))).willReturn(productEntity);
 
-        this.mockMvc.perform(get("/v1/Producto/{id}", idProducto))
+        this.mockMvc.perform(get("/v1/Product/{id}", idProducto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nombreProducto", is(productEntity.getNombreProducto())));
     }
@@ -81,7 +81,7 @@ class ProductControllerTest {
         given(productoService.findById(String.valueOf(idProducto))).willReturn(productEntity);
         doNothing().when(productoService).deleteBy(Long.valueOf(productEntity.getIdProducto()));
 
-        this.mockMvc.perform(delete("/v1/Producto/{id}", productEntity.getIdProducto()))
+        this.mockMvc.perform(delete("/v1/Product/{id}", productEntity.getIdProducto()))
                 .andExpect(status().isOk());
     }
 }

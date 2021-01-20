@@ -2,8 +2,8 @@ package com.flexibilitysrl.services;
 
 import com.flexibilitysrl.entity.CostumerEntity;
 import com.flexibilitysrl.entity.ProductEntity;
+import com.flexibilitysrl.entity.SalesEntity;
 import com.flexibilitysrl.entity.SellerEntity;
-import com.flexibilitysrl.entity.SellsEntity;
 import com.flexibilitysrl.exception.IllegalArgEx;
 import com.flexibilitysrl.repositories.CostumerRepositories;
 import com.flexibilitysrl.repositories.ProductRepositories;
@@ -29,65 +29,77 @@ public class SellsServiceImpl implements ISellsService {
     @Autowired
     private ProductRepositories productRepositories;
 
-    private static Logger logger = LoggerFactory.getLogger(SellsServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(SellsServiceImpl.class);
 
     @Override
-    public SellsEntity saveVentas(SellsEntity sellsEntity,
+    public SalesEntity saveVentas(SalesEntity salesEntity,
                                   List<ProductEntity> productEntityOpt,
                                   CostumerEntity costumerEntityOpt,
                                   SellerEntity sellerEntityOpt) throws IllegalArgEx {
-        String message = "";
+
         double totalCompra = 0;
         int i = 0;
-        ProductEntity productEntity1 = new ProductEntity();
-        SellsEntity sellsEntityDb = new SellsEntity();
+        SalesEntity salesEntityDb = new SalesEntity();
         if (productEntityOpt.stream().findFirst().get().getStock() > 0 &&
-                sellsEntity.getCantidad() <= productEntityOpt.stream().
+                salesEntity.getCantidad() <= productEntityOpt.stream().
                         findFirst().get().getStock()) {
 
             for (ProductEntity prod : productEntityOpt) {
                 totalCompra = prod.getPrecio() + totalCompra;
-                prod.setStock(prod.getStock()- sellsEntity.getCantidad());
-                productEntityOpt.set(i,prod);
+                prod.setStock(prod.getStock() - salesEntity.getCantidad());
+                productEntityOpt.set(i, prod);
                 i++;
             }
-            sellsEntityDb.setProductoEntities(productEntityOpt);
-            sellsEntityDb.setSellerEntity(sellerEntityOpt);
-            sellsEntityDb.setCostumerEntity(costumerEntityOpt);
-            sellsEntityDb.setIdVentas(sellsEntity.getIdVentas());
-            sellsEntityDb.setCantidad(sellsEntity.getCantidad());
-            sellsEntityDb.setTotal(totalCompra * sellsEntityDb.getCantidad());
+            salesEntityDb.setProductoEntities(productEntityOpt);
+            salesEntityDb.setSellerEntity(sellerEntityOpt);
+            salesEntityDb.setCostumerEntity(costumerEntityOpt);
+            salesEntityDb.setIdVentas(salesEntity.getIdVentas());
+            salesEntityDb.setCantidad(salesEntity.getCantidad());
+            salesEntityDb.setTotal(totalCompra * salesEntityDb.getCantidad());
         } else {
+            logger.warn("INSUFFICIENT STOCK");
             throw new IllegalArgEx("INSUFFICIENT STOCK");
         }
-        return sellsRepositories.save(sellsEntityDb);
+        return sellsRepositories.save(salesEntityDb);
     }
 
     @Override
     public void deleteVentas(Long id) {
+        String message = null;
+        try {
+            if (id != null) {
+                sellsRepositories.deleteById(id);
+                message = "ID FOUND";
+            }
 
+        } catch (IllegalArgEx ob) {
+            ob.getMessage();
+        }
+        logger.info(message);
+    }
+
+
+    @Override
+    public SalesEntity updateVentas(SalesEntity salesEntity) {
+        SalesEntity salesEntityDb = new SalesEntity();
+        salesEntityDb.setCantidad(salesEntity.getCantidad());
+        salesEntityDb.setCostumerEntity(salesEntity.getCostumerEntity());
+        salesEntityDb.setFechaCompra(salesEntity.getFechaCompra());
+        salesEntityDb.setIdVentas(salesEntity.getIdVentas());
+        salesEntityDb.setProductoEntities(salesEntity.getProductoEntities());
+        salesEntityDb.setSellerEntity(salesEntity.getSellerEntity());
+        salesEntityDb.setTotal(salesEntity.getTotal());
+        return sellsRepositories.save(salesEntityDb);
     }
 
     @Override
-    public SellsEntity updateVentas(SellsEntity sellsEntity) {
-        return null;
-    }
-
-    @Override
-    public Iterable<SellsEntity> findAllVentas() {
+    public Iterable<SalesEntity> findAllVentas() {
         return sellsRepositories.findAll();
     }
 
     @Override
-    public SellsEntity findByIdVenta(Long id) {
+    public SalesEntity findByIdVenta(Long id) {
         return sellsRepositories.findById(id).orElseThrow(() -> new IllegalArgEx("ERROR"));
     }
 }
-//totalCompra = ventasEntityDb.getProductoEntities().get(i).getPrecio() + totalCompra;
-//productoEntityOpt.stream().forEach((p) -> {
-                    /*ProductEntity producResg = new ProductEntity();
-                    producResg.setIdProducto(p.getIdProducto());
-                    producResg.setNombreProducto(p.getNombreProducto());
-                    producResg.setTipo(p.getTipo());
-                    producResg.setPrecio(p.getPrecio());
-                    producResg.setStock(p.getStock());*/
+

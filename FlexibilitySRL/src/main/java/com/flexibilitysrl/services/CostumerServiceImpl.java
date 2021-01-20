@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CostumerServiceImpl implements ICostumerService {
 
-    private static Logger logger = LoggerFactory.getLogger(ICostumerService.class);
+    private static  final Logger logger = LoggerFactory.getLogger(CostumerServiceImpl.class);
+
     @Autowired
     private CostumerRepositories costumerRepositories;
 
@@ -42,9 +43,9 @@ public class CostumerServiceImpl implements ICostumerService {
             }
 
         } catch (IllegalArgEx ob) {
-            String messageObError = ob.getMessage();
+            ob.getMessage();
         }
-        System.out.println(message);
+        logger.info(message);
 
 
     }

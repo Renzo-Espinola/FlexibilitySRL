@@ -21,4 +21,10 @@ public class CostumerEntity extends PersonEntity {
     private Long idCliente;
     @Column
     private String razonSocial;
+
+    public CostumerEntity(Long idCliente, Long dni, String nombre, String apellido,  String razonSocial) {
+        super(dni, nombre, apellido);
+        this.idCliente = idCliente;
+        this.razonSocial = razonSocial;
+    }
 }

@@ -1,6 +1,6 @@
 package com.flexibilitysrl.models;
 
-import com.flexibilitysrl.entity.SellsEntity;
+import com.flexibilitysrl.entity.SalesEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestsSells {
-    private SellsEntity sellsEntity;
+    private SalesEntity salesEntity;
     private Long idSeller;
     private Long idClient;
     private List<String> idProductsList;

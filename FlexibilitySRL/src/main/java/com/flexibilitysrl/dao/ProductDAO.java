@@ -1,5 +1,6 @@
-package com.flexibilitysrl.models;
+package com.flexibilitysrl.dao;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
-
+public class ProductDAO {
+    @ApiModelProperty(hidden = true)
     private String idProducto;
     private String nombreProducto;
     private double precio;

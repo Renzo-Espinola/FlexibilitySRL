@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class ProductServiceImpl implements IProductService {
-    private static Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
     @Autowired
     private ProductRepositories productRepositories;
 
@@ -22,8 +22,8 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ProductEntity save(ProductEntity productEntity) {
-        return productRepositories.save(productEntity);
+    public ProductEntity save(ProductEntity product) {
+        return productRepositories.save(product);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ProductServiceImpl implements IProductService {
         } catch (IllegalArgEx ob) {
             logger.error(ob.getMessage());
         }
-        System.out.println(message);
+        logger.info(message);
 
     }
 

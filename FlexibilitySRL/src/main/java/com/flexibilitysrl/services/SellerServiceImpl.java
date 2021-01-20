@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class SellerServiceImpl implements ISellerService {
-    private static Logger logger = LoggerFactory.getLogger(ICostumerService.class);
+    private static final Logger logger = LoggerFactory.getLogger(SellerServiceImpl.class);
     @Autowired
     private SellerRepositories sellerRepositories;
     
@@ -42,9 +42,9 @@ public class SellerServiceImpl implements ISellerService {
             }
 
         } catch (IllegalArgEx ob) {
-            String messageObError = ob.getMessage();
+            ob.getMessage();
         }
-        System.out.println(message);
+        logger.info(message);
     }
 
     @Override
